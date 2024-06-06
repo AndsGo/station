@@ -1,0 +1,6 @@
+Name: station-api
+Host: 127.0.0.1
+Port: 8000
+RpcConf:
+  Target: dns:///127.0.0.1:8080
+  Timeout: 10000 #rpc 超时时间

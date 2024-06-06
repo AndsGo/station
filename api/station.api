@@ -1,0 +1,15 @@
+//基础请求体
+type BaseResponse {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    string `json:"data"`
+}
+
+@server (
+	group: base
+)
+service station-api {
+	@handler hello
+	get /station/api/hello returns (BaseResponse)
+}
+
