@@ -1,0 +1,1333 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "127.0.0.1:8000",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/station/api/deliverylog": {
+      "get": {
+        "summary": "查询DeliveryLog",
+        "operationId": "queryDeliveryLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeliveryLogListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " Page number | 第几页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "description": " Page size | 单页数据行数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "title",
+            "description": " 标题",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "source",
+            "description": " 来源",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "domainName",
+            "description": " 域名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "deliveryDate",
+            "description": " 投放日期",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "deliverer",
+            "description": " 投放人",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 投放状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "author",
+            "description": " 作者",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "deliveryLog"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "投放",
+        "operationId": "addDeliveryLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BaseDataInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " The response data of DeliveryLog list | DeliveryLog 列表数据",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeliveryListInfo"
+            }
+          }
+        ],
+        "tags": [
+          "deliveryLog"
+        ]
+      },
+      "put": {
+        "summary": "修改DeliveryLog",
+        "operationId": "updateDeliveryLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeliveryLogInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " DeliveryLog",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeliveryLogInfo"
+            }
+          }
+        ],
+        "tags": [
+          "deliveryLog"
+        ]
+      }
+    },
+    "/station/api/deliverylog/list": {
+      "post": {
+        "summary": "获取投放列表",
+        "operationId": "generateDeliveryList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DeliveryLogListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 投放对象",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeliveryInfo"
+            }
+          }
+        ],
+        "tags": [
+          "deliveryLog"
+        ]
+      }
+    },
+    "/station/api/deliverylog/{id}": {
+      "delete": {
+        "summary": "删除DeliveryLog",
+        "operationId": "deleteDeliveryLog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BaseDataInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " Basic ID request | 基础ID地址参数请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IDPathReq"
+            }
+          }
+        ],
+        "tags": [
+          "deliveryLog"
+        ]
+      }
+    },
+    "/station/api/posts": {
+      "get": {
+        "summary": "查询Posts",
+        "operationId": "queryPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostsListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " Page number | 第几页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "description": " Page size | 单页数据行数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "title",
+            "description": " 标题",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "source",
+            "description": " 来源",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "categories",
+            "description": " 分类",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "author",
+            "description": " 作者",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "createTime",
+            "description": " 时间",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "posts"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "新增Posts",
+        "operationId": "addPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostsInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " Posts",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostsInfo"
+            }
+          }
+        ],
+        "tags": [
+          "posts"
+        ]
+      },
+      "put": {
+        "summary": "修改Posts",
+        "operationId": "updatePosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostsInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " Posts",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostsInfo"
+            }
+          }
+        ],
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/station/api/posts/{id}": {
+      "get": {
+        "summary": "查询Posts详情",
+        "operationId": "getPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostsInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "posts"
+        ]
+      },
+      "delete": {
+        "summary": "删除Posts",
+        "operationId": "deletePosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BaseDataInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " Basic ID request | 基础ID地址参数请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IDPathReq"
+            }
+          }
+        ],
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/station/api/station": {
+      "get": {
+        "summary": "查询站点",
+        "operationId": "queryStation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StationListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": " Page number | 第几页",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pageSize",
+            "description": " Page size | 单页数据行数",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "domainName",
+            "description": " 域名",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ip",
+            "description": " ip",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "domainYear",
+            "description": " 域名年份",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "googleWeight",
+            "description": " 谷歌权重",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": " 网站类型",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "industry",
+            "description": " 网站行业",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "station"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      },
+      "post": {
+        "summary": "新增站点",
+        "operationId": "addStation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StationInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " Station ",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StationInfo"
+            }
+          }
+        ],
+        "tags": [
+          "station"
+        ]
+      },
+      "put": {
+        "summary": "修改站点",
+        "operationId": "updateStation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StationInfoResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " Station ",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StationInfo"
+            }
+          }
+        ],
+        "tags": [
+          "station"
+        ]
+      }
+    },
+    "/station/api/station/posts/{id}": {
+      "get": {
+        "summary": "获取关联的文章",
+        "operationId": "queryPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StationPostsResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "station"
+        ]
+      }
+    },
+    "/station/api/station/{id}": {
+      "delete": {
+        "summary": "删除站点",
+        "operationId": "deleteStation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BaseDataInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "description": " Basic ID request | 基础ID地址参数请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IDPathReq"
+            }
+          }
+        ],
+        "tags": [
+          "station"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "BaseDataInfo": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        }
+      },
+      "title": "BaseDataInfo",
+      "required": [
+        "code",
+        "message"
+      ]
+    },
+    "BaseListInfo": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " The total number of data | 数据总数"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        }
+      },
+      "title": "BaseListInfo",
+      "required": [
+        "total"
+      ]
+    },
+    "BaseMsgResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        }
+      },
+      "title": "BaseMsgResp",
+      "required": [
+        "code",
+        "message"
+      ]
+    },
+    "DeliveryInfo": {
+      "type": "object",
+      "properties": {
+        "stationInfoList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationInfo"
+          },
+          "description": " 站点id"
+        },
+        "postsInfoList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostsInfo"
+          },
+          "description": " 文章id"
+        }
+      },
+      "title": "DeliveryInfo",
+      "required": [
+        "stationInfoList",
+        "postsInfoList"
+      ]
+    },
+    "DeliveryListInfo": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeliveryLogInfo"
+          },
+          "description": " DeliveryInfo list data | DeliveryInfo列表数据"
+        }
+      },
+      "title": "DeliveryListInfo",
+      "required": [
+        "data"
+      ]
+    },
+    "DeliveryLogInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "description": " 标题"
+        },
+        "source": {
+          "type": "string",
+          "description": " 来源"
+        },
+        "domainName": {
+          "type": "string",
+          "description": " 域名"
+        },
+        "deliveryDate": {
+          "type": "string",
+          "description": " 投放日期"
+        },
+        "deliverer": {
+          "type": "string",
+          "description": " 投放人"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 投放状态"
+        },
+        "author": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 作者"
+        },
+        "wpCateIds": {
+          "type": "string",
+          "description": " wp分类"
+        },
+        "stationId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 站点id"
+        },
+        "postsId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文章id"
+        }
+      },
+      "title": "DeliveryLogInfo",
+      "required": [
+        "title",
+        "domainName"
+      ]
+    },
+    "DeliveryLogInfoResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/DeliveryLogInfo",
+          "description": " DeliveryLog information | DeliveryLog数据"
+        }
+      },
+      "title": "DeliveryLogInfoResp",
+      "required": [
+        "data"
+      ]
+    },
+    "DeliveryLogListInfo": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " The total number of data | 数据总数"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeliveryLogInfo"
+          },
+          "description": " DeliveryLogInfo list data | DeliveryLogInfo列表数据"
+        }
+      },
+      "title": "DeliveryLogListInfo",
+      "required": [
+        "data"
+      ]
+    },
+    "DeliveryLogListResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/DeliveryLogListInfo",
+          "description": " DeliveryLog list data | DeliveryLog列表数据"
+        }
+      },
+      "title": "DeliveryLogListResp",
+      "required": [
+        "data"
+      ]
+    },
+    "DeliveryLogReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page number | 第几页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page size | 单页数据行数"
+        },
+        "title": {
+          "type": "string",
+          "description": " 标题"
+        },
+        "source": {
+          "type": "string",
+          "description": " 来源"
+        },
+        "domainName": {
+          "type": "string",
+          "description": " 域名"
+        },
+        "deliveryDate": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 投放日期"
+        },
+        "deliverer": {
+          "type": "string",
+          "description": " 投放人"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 投放状态"
+        },
+        "author": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 作者"
+        }
+      },
+      "title": "DeliveryLogReq"
+    },
+    "IDPathReq": {
+      "type": "object",
+      "title": "IDPathReq"
+    },
+    "IDReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " ID Required: true"
+        }
+      },
+      "title": "IDReq",
+      "required": [
+        "id"
+      ]
+    },
+    "IDsReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": " IDs Required: true"
+        }
+      },
+      "title": "IDsReq",
+      "required": [
+        "ids"
+      ]
+    },
+    "PageInfo": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page number | 第几页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page size | 单页数据行数"
+        }
+      },
+      "title": "PageInfo",
+      "required": [
+        "page",
+        "pageSize"
+      ]
+    },
+    "PostsInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "description": " 标题"
+        },
+        "source": {
+          "type": "string",
+          "description": " 来源"
+        },
+        "author": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 作者"
+        },
+        "thrownNum": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 投放数量"
+        },
+        "categories": {
+          "type": "string",
+          "description": " 分类"
+        },
+        "createTime": {
+          "type": "string",
+          "description": "时间"
+        },
+        "content": {
+          "type": "string",
+          "description": "详情"
+        }
+      },
+      "title": "PostsInfo",
+      "required": [
+        "title",
+        "source",
+        "author",
+        "thrownNum",
+        "categories",
+        "content"
+      ]
+    },
+    "PostsInfoResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/PostsInfo",
+          "description": " Posts information | Posts数据"
+        }
+      },
+      "title": "PostsInfoResp",
+      "required": [
+        "data"
+      ]
+    },
+    "PostsListInfo": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " The total number of data | 数据总数"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostsInfo"
+          },
+          "description": " PostsInfo list data | PostsInfo列表数据"
+        }
+      },
+      "title": "PostsListInfo",
+      "required": [
+        "data"
+      ]
+    },
+    "PostsListResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/PostsListInfo",
+          "description": " Posts list data | Posts列表数据"
+        }
+      },
+      "title": "PostsListResp",
+      "required": [
+        "data"
+      ]
+    },
+    "PostsReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page number | 第几页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page size | 单页数据行数"
+        },
+        "title": {
+          "type": "string",
+          "description": " 标题"
+        },
+        "source": {
+          "type": "string",
+          "description": " 来源"
+        },
+        "categories": {
+          "type": "string",
+          "description": " 分类"
+        },
+        "author": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 作者"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 时间"
+        }
+      },
+      "title": "PostsReq"
+    },
+    "StationInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键"
+        },
+        "domainName": {
+          "type": "string",
+          "description": " 域名"
+        },
+        "ip": {
+          "type": "string",
+          "description": " 域名"
+        },
+        "domainYear": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 域名年份"
+        },
+        "googleWeight": {
+          "type": "number",
+          "format": "double",
+          "description": " 谷歌权重"
+        },
+        "type": {
+          "type": "string",
+          "description": " 网站类型"
+        },
+        "industry": {
+          "type": "string",
+          "description": " 网站行业"
+        },
+        "articlesNum": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 文章数量"
+        },
+        "userName": {
+          "type": "string",
+          "description": " 账号名"
+        },
+        "passWord": {
+          "type": "string",
+          "description": " 密码"
+        }
+      },
+      "title": "StationInfo",
+      "required": [
+        "domainName",
+        "domainYear",
+        "googleWeight",
+        "type",
+        "industry",
+        "articlesNum"
+      ]
+    },
+    "StationInfoResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/StationInfo",
+          "description": " Station information | Station数据"
+        }
+      },
+      "title": "StationInfoResp",
+      "required": [
+        "data"
+      ]
+    },
+    "StationListInfo": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " The total number of data | 数据总数"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationInfo"
+          },
+          "description": " StationInfo list data | StationInfo列表数据"
+        }
+      },
+      "title": "StationListInfo",
+      "required": [
+        "data"
+      ]
+    },
+    "StationListResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "$ref": "#/definitions/StationListInfo",
+          "description": " Station list data | Station列表数据"
+        }
+      },
+      "title": "StationListResp",
+      "required": [
+        "data"
+      ]
+    },
+    "StationPostsInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string",
+          "description": " Title"
+        }
+      },
+      "title": "StationPostsInfo",
+      "required": [
+        "id",
+        "title"
+      ]
+    },
+    "StationPostsResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": " Error code | 错误代码"
+        },
+        "message": {
+          "type": "string",
+          "description": " Message | 提示信息"
+        },
+        "data": {
+          "type": "string",
+          "description": " Data | 数据"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationPostsInfo"
+          },
+          "description": " Station Posts 返回体"
+        }
+      },
+      "title": "StationPostsResp",
+      "required": [
+        "data"
+      ]
+    },
+    "StationReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page number | 第几页"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " Page size | 单页数据行数"
+        },
+        "domainName": {
+          "type": "string",
+          "description": " 域名"
+        },
+        "ip": {
+          "type": "string",
+          "description": " ip"
+        },
+        "domainYear": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 域名年份"
+        },
+        "googleWeight": {
+          "type": "string",
+          "description": " 谷歌权重"
+        },
+        "type": {
+          "type": "string",
+          "description": " 网站类型"
+        },
+        "industry": {
+          "type": "string",
+          "description": " 网站行业"
+        }
+      },
+      "title": "StationReq"
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+//博客信息
+type (
+	// Posts
+	PostsInfo {
+		Id         uint64 `json:"id,optional"`
+		Title      string `json:"title"` // 标题
+		Source     string `json:"source"` // 来源
+		Author     int64 `json:"author"` // 作者
+		ThrownNum  int64  `json:"thrownNum"` // 投放数量
+		Categories  string  `json:"categories"` // 分类
+		CreateTime string `json:"createTime,optional"` //时间
+		Content    string `json:"content"` //详情
+	}
+	// Posts 页面查询
+	PostsReq {
+		PageInfo
+		Title      string `form:"title,optional"` // 标题
+		Source     string `form:"source,optional"` // 来源
+		Categories     string `form:"categories,optional"` // 分类
+		Author     int64 `form:"author,optional"` // 作者
+		CreateTime int64  `form:"createTime,optional"` // 时间
+	}
+	// The response data of Posts list | Posts 列表数据
+	PostsListInfo {
+		BaseListInfo
+		Data []PostsInfo `json:"data"` // PostsInfo list data | PostsInfo列表数据
+	}
+	//Posts 列表返回体
+	PostsListResp {
+		BaseDataInfo
+		Data PostsListInfo `json:"data"` // Posts list data | Posts列表数据
+	}
+	// Posts 普通返回体
+	PostsInfoResp {
+		BaseDataInfo
+		Data PostsInfo `json:"data"` // Posts information | Posts数据
+	}
+)
+
+@server (
+	group:      posts
+	prefix:     /station
+)
+service Station {
+	@doc "新增Posts"
+	@handler addPosts
+	post /api/posts (PostsInfo) returns (PostsInfoResp)
+
+	@doc "修改Posts"
+	@handler updatePosts
+	put /api/posts (PostsInfo) returns (PostsInfoResp)
+
+	@doc "删除Posts"
+	@handler deletePosts
+	delete /api/posts/:id (IDPathReq) returns (BaseDataInfo)
+
+    @doc "查询Posts"
+	@handler queryPosts
+	get /api/posts (PostsReq) returns (PostsListResp)
+
+	@doc "查询Posts详情"
+	@handler getPosts
+	get /api/posts/:id (IDPathReq) returns (PostsInfoResp)
+}

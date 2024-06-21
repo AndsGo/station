@@ -1,0 +1,73 @@
+//站点信息
+type  (
+	// Station 
+	StationInfo {
+		Id           uint64  `json:"id,optional"`            // 主键
+		DomainName   string  `json:"domainName"`   // 域名
+		Ip           string  `json:"ip,optional"`   // 域名
+		DomainYear   int64   `json:"domainYear"`   // 域名年份
+		GoogleWeight float64 `json:"googleWeight"` // 谷歌权重
+		Type         string  `json:"type"`          // 网站类型
+		Industry     string  `json:"industry"`      // 网站行业
+		ArticlesNum  int64   `json:"articlesNum"`     // 文章数量
+		UserName     string  `json:"userName,optional"`     // 账号名
+		PassWord     string  `json:"passWord,optional"`     // 密码
+	}
+	// Station 页面查询
+	StationReq {
+		PageInfo
+		DomainName   string  `form:"domainName,optional"`   // 域名
+		Ip           string  `form:"ip,optional"`           // ip
+		DomainYear   int64   `form:"domainYear,optional"`   // 域名年份
+		GoogleWeight string  `form:"googleWeight,optional"` // 谷歌权重
+		Type         string  `form:"type,optional"`          // 网站类型
+		Industry     string  `form:"industry,optional"`      // 网站行业
+	}
+	// The response data of Station list | Station 列表数据
+	StationListInfo {
+		BaseListInfo
+		Data []StationInfo `json:"data"` // StationInfo list data | StationInfo列表数据
+	}
+	//Station 列表返回体
+	StationListResp {
+		BaseDataInfo
+		Data StationListInfo `json:"data"` // Station list data | Station列表数据
+	}
+	// Station 普通返回体
+	StationInfoResp {
+        BaseDataInfo
+        Data StationInfo `json:"data"` // Station information | Station数据
+    }
+	// Station Posts 返回体  
+	StationPostsInfo {
+       Id         uint64 `json:"id"`
+	   Title      string `json:"title"`       // Title
+    }
+	// 返回体
+	StationPostsResp{
+		BaseDataInfo
+		Data []StationPostsInfo `json:"data"`  // Station Posts 返回体
+	}
+)  
+@server (
+	group:      station
+	prefix: 	/station
+	timeout:    10s
+)
+service Station {
+	@doc "新增站点"
+	@handler addStation
+	post /api/station (StationInfo) returns (StationInfoResp)
+	@doc "修改站点"
+	@handler updateStation
+	put /api/station (StationInfo) returns (StationInfoResp)
+	@doc "删除站点"
+	@handler deleteStation
+	delete /api/station/:id (IDPathReq) returns (BaseDataInfo)
+	@doc "查询站点"
+	@handler queryStation
+	get /api/station (StationReq) returns (StationListResp)
+    @doc "获取关联的文章"
+	@handler queryPosts
+	get /api/station/posts/:id (IDPathReq) returns (StationPostsResp)
+}

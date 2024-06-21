@@ -3,8 +3,11 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
-	base "api/internal/handler/base"
+	deliveryLog "api/internal/handler/deliveryLog"
+	posts "api/internal/handler/posts"
+	station "api/internal/handler/station"
 	"api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -14,10 +17,109 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				// 投放
+				Method:  http.MethodPost,
+				Path:    "/api/deliverylog",
+				Handler: deliveryLog.AddDeliveryLogHandler(serverCtx),
+			},
+			{
+				// 修改DeliveryLog
+				Method:  http.MethodPut,
+				Path:    "/api/deliverylog",
+				Handler: deliveryLog.UpdateDeliveryLogHandler(serverCtx),
+			},
+			{
+				// 查询DeliveryLog
 				Method:  http.MethodGet,
-				Path:    "/station/api/hello",
-				Handler: base.HelloHandler(serverCtx),
+				Path:    "/api/deliverylog",
+				Handler: deliveryLog.QueryDeliveryLogHandler(serverCtx),
+			},
+			{
+				// 删除DeliveryLog
+				Method:  http.MethodDelete,
+				Path:    "/api/deliverylog/:id",
+				Handler: deliveryLog.DeleteDeliveryLogHandler(serverCtx),
+			},
+			{
+				// 获取投放列表
+				Method:  http.MethodPost,
+				Path:    "/api/deliverylog/list",
+				Handler: deliveryLog.GenerateDeliveryListHandler(serverCtx),
 			},
 		},
+		rest.WithPrefix("/station"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// 新增Posts
+				Method:  http.MethodPost,
+				Path:    "/api/posts",
+				Handler: posts.AddPostsHandler(serverCtx),
+			},
+			{
+				// 修改Posts
+				Method:  http.MethodPut,
+				Path:    "/api/posts",
+				Handler: posts.UpdatePostsHandler(serverCtx),
+			},
+			{
+				// 查询Posts
+				Method:  http.MethodGet,
+				Path:    "/api/posts",
+				Handler: posts.QueryPostsHandler(serverCtx),
+			},
+			{
+				// 删除Posts
+				Method:  http.MethodDelete,
+				Path:    "/api/posts/:id",
+				Handler: posts.DeletePostsHandler(serverCtx),
+			},
+			{
+				// 查询Posts详情
+				Method:  http.MethodGet,
+				Path:    "/api/posts/:id",
+				Handler: posts.GetPostsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/station"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// 新增站点
+				Method:  http.MethodPost,
+				Path:    "/api/station",
+				Handler: station.AddStationHandler(serverCtx),
+			},
+			{
+				// 修改站点
+				Method:  http.MethodPut,
+				Path:    "/api/station",
+				Handler: station.UpdateStationHandler(serverCtx),
+			},
+			{
+				// 查询站点
+				Method:  http.MethodGet,
+				Path:    "/api/station",
+				Handler: station.QueryStationHandler(serverCtx),
+			},
+			{
+				// 删除站点
+				Method:  http.MethodDelete,
+				Path:    "/api/station/:id",
+				Handler: station.DeleteStationHandler(serverCtx),
+			},
+			{
+				// 获取关联的文章
+				Method:  http.MethodGet,
+				Path:    "/api/station/posts/:id",
+				Handler: station.QueryPostsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/station"),
+		rest.WithTimeout(10000*time.Millisecond),
 	)
 }

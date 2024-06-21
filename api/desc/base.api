@@ -1,0 +1,35 @@
+syntax = "v1"
+
+// The basic response with data | 基础带数据信息
+type BaseDataInfo {
+    Code int    `json:"code"`           // Error code | 错误代码
+    Message  string `json:"message"`    // Message | 提示信息
+    Data string `json:"data,omitempty"` // Data | 数据
+}
+// The basic response with data | 基础带数据信息
+type BaseListInfo {
+    Total uint64 `json:"total"`          // The total number of data | 数据总数
+    Data string `json:"data,omitempty"`  // Data | 数据
+}
+// The basic response without data | 基础不带数据信息
+type BaseMsgResp {
+    Code int    `json:"code"`          // Error code | 错误代码
+    Message  string `json:"message"`   // Message | 提示信息
+}
+// The page request parameters | 列表请求参数
+type PageInfo {
+    Page   uint64    `form:"page" validate:"required,number,gt=0"`             // Page number | 第几页
+    PageSize  uint64    `form:"pageSize" validate:"required,number,lt=100000"` // Page size | 单页数据行数
+}
+// Basic ID request | 基础ID参数请求
+type IDReq {
+    Id  uint64 `json:"id" validate:"number"` // ID Required: true
+}
+// Basic IDs request | 基础ID数组参数请求
+type IDsReq {
+    Ids  []uint64 `json:"ids"` // IDs Required: true
+}
+// Basic ID request | 基础ID地址参数请求
+type IDPathReq {
+    Id  uint64 `path:"id"` // ID  Required: true
+}
