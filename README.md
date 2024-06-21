@@ -1,8 +1,8 @@
 # 目录
 
 [1.1需求分析](doc/1需求分析.md)
-
 [2.代码实现](doc/2代码实现.md)
+[2.api初始化和swagger使用](doc/3api初始化和swagger使用.md)
 ```HTML
 <video width="320" height="240" controls>
     <source src="https://www.bilibili.com/video/BV1mS411K7w6/" type="video/mp4">
