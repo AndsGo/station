@@ -10,13 +10,21 @@ import (
 type ServiceContext struct {
 	Config config.Config
 	// 数据 redis
-	StationUsersModel model.StationUsersModel
+	DeliveryLogModel          model.DeliveryLogModel
+	StationModel              model.StationModel
+	PostsModel                model.PostsModel
+	StationPostsTextModel     model.StationPostsTextModel
+	StationPostsRelationModel model.StationPostsRelationModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	cnn := sqlx.NewMysql(c.DB.DataSource)
 	return &ServiceContext{
-		Config:            c,
-		StationUsersModel: model.NewStationUsersModel(cnn),
+		Config:                    c,
+		DeliveryLogModel:          model.NewDeliveryLogModel(cnn),
+		StationModel:              model.NewStationModel(cnn),
+		PostsModel:                model.NewPostsModel(cnn),
+		StationPostsTextModel:     model.NewStationPostsTextModel(cnn),
+		StationPostsRelationModel: model.NewStationPostsRelationModel(cnn),
 	}
 }

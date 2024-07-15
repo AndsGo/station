@@ -4,10 +4,14 @@ import (
 	"flag"
 	"fmt"
 
-	"rpc/example/proto/greet"
 	"rpc/internal/config"
-	greetServer "rpc/internal/server/greet"
+	deliverylogServer "rpc/internal/server/deliverylog"
+	postsServer "rpc/internal/server/posts"
+	stationServer "rpc/internal/server/station"
+	stationPostsRelationServer "rpc/internal/server/stationpostsrelation"
+	usersServer "rpc/internal/server/users"
 	"rpc/internal/svc"
+	"rpc/station"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -26,7 +30,11 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		greet.RegisterGreetServer(grpcServer, greetServer.NewGreetServer(ctx))
+		station.RegisterDeliveryLogServer(grpcServer, deliverylogServer.NewDeliveryLogServer(ctx))
+		station.RegisterStationServer(grpcServer, stationServer.NewStationServer(ctx))
+		station.RegisterPostsServer(grpcServer, postsServer.NewPostsServer(ctx))
+		station.RegisterUsersServer(grpcServer, usersServer.NewUsersServer(ctx))
+		station.RegisterStationPostsRelationServer(grpcServer, stationPostsRelationServer.NewStationPostsRelationServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

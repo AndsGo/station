@@ -1,17 +1,244 @@
-// 声明 proto 语法版本，固定值
 syntax = "proto3";
-// proto 包名
+
+option go_package = "./station";
+
 package station;
-// 生成 golang 代码后的包名
-option go_package = "example/proto/greet";
-// 定义请求体
-message SayHelloReq {}
-// 定义响应体
-message SayHelloResp {
-    string message = 1;
+
+// The basic response with data
+message BaseDataInfo {
+    int32 code = 1;
+    string message = 2;
+    string data = 3;
 }
-// 定义 Greet 服务
-service Greet {
-  // 定义一个 SayHello 一元 rpc 方法，请求体和响应体必填。
-  rpc SayHello(SayHelloReq) returns (SayHelloResp);
+// The basic response with data
+message BaseListInfo {
+    uint64 total = 1;
+    string data = 2;
+}
+// The page request parameters
+message PageInfo {
+    uint64 page = 1;
+    uint64 pageSize = 2;
+}
+// ID Status request
+message IDStatusReq {
+    uint64 id = 1;
+    int64 status = 2;
+    string result = 3; // 执行结果
+}
+
+
+// Basic ID request
+message IDPathReq {
+    uint64 id = 1;
+}
+
+// Basic UUID request
+message UUIDReq {
+    string id = 1;
+}
+
+// Station information
+message StationInfo {
+    uint64 id = 1;
+    string domain_name = 2;
+    int64 domain_year = 3;
+    double google_weight = 4;
+    string type = 5;
+    string industry = 6;
+    string user_name = 7;
+    string pass_word = 8;
+    int64 articles_num = 9;
+    string ip = 10;
+}
+
+// Station page query
+message StationReq {
+    PageInfo page_info = 1;
+    string domain_name = 2;
+    int64 domain_year = 3;
+    string google_weight = 4;
+    string type = 5;
+    string industry = 6;
+    string ip = 7;
+}
+
+// The response data of Station list
+message StationListInfo {
+    BaseListInfo base_list_info = 1;
+    repeated StationInfo data = 2;
+}
+
+// Station list response
+message StationListResp {
+    BaseDataInfo base_data_info = 1;
+    StationListInfo data = 2;
+}
+
+// Station normal response
+message StationInfoResp {
+    BaseDataInfo base_data_info = 1;
+    StationInfo data = 2;
+}
+
+// Posts information
+message PostsInfo {
+    uint64 id = 1;
+    string title = 2;
+    string source = 3;
+    int64 author = 4;
+    int64 thrown_num = 5;
+    string create_time = 6;
+    string content = 7;
+    string media = 8;
+    string categories = 9;
+}
+
+// Posts page query
+message PostsReq {
+    PageInfo page_info = 1;
+    string title = 2;
+    string source = 3;
+    int64 author = 4;
+    string create_time = 5;
+    string categories = 6;
+}
+
+// The response data of Posts list
+message PostsListInfo {
+    BaseListInfo base_list_info = 1;
+    repeated PostsInfo data = 2;
+}
+
+// DeliveryLog information
+message DeliveryLogInfo {
+    uint64 id = 1;
+    string title = 2;
+    string source = 3;
+    string domain_name = 4;
+    string delivery_date = 5;
+    string deliverer = 6;
+    int64 status = 7;
+    uint64 author = 8;
+    uint64 posts_id =9;
+	uint64 station_id =10;
+    string wp_cate_ids =11;
+}
+
+message DeliveryInfo {
+	repeated StationInfo station_info_list =1;
+	repeated PostsInfo posts_info_list =2;
+    string deliverer = 3;
+}
+
+// DeliveryLog page query
+message DeliveryLogReq {
+    PageInfo page_info = 1;
+    string title = 2;
+    string source = 3;
+    string domain_name = 4;
+    string delivery_date = 5;
+    string deliverer = 6;
+    int64 status = 7;
+    int64 author = 8;
+}
+
+// The response data of DeliveryLog list
+message DeliveryLogListInfo {
+    BaseListInfo base_list_info = 1;
+    repeated DeliveryLogInfo data = 2;
+}
+
+// StationPostsRelation information
+message StationPostsRelationInfo{
+    uint64 id = 1;
+    uint64 station_id =2;
+    uint64 posts_id =3;
+    int64 wp_id =4;
+}
+
+message StationPostsInfo{
+    uint64 id = 1;
+    string title = 2;   
+}
+
+// Station Posts  返回体
+message	StationPostsResp {
+    repeated StationPostsInfo data = 1;
+}
+
+message PostsStationInfo {
+    uint64 id = 1;
+    string domain_name = 2;
+}
+// Posts Station 返回体
+message	PostsStationResp {
+    repeated PostsStationInfo data = 1;
+}
+
+// Users
+message UsersInfo {
+  uint64 id = 1; // 可选
+  string name = 2; // 姓名，页面显示
+  string email = 3; // 邮箱
+  string slug = 4; // 用户标识符
+  string username = 5; // 登录名称
+  string password = 6; // 登录密码，实际应用中应避免直接传输明文密码
+}
+// Users 页面查询
+message UsersReq {
+  string name = 1; // 姓名
+  string email = 2; // 邮箱
+  string slug = 3; // 用户标识符
+  string create_time = 4; // 创建时间
+  PageInfo page_info = 5; // 分页信息，假设 PageInfo 已定义
+}
+// The response data of Users list | Users 列表数据
+message UsersListInfo {
+    BaseListInfo base_list_info = 1;
+    repeated UsersInfo data =2;
+}
+
+service Users {
+    rpc addUsers(UsersInfo) returns (UsersInfo);
+    rpc updateUsers(UsersInfo) returns (UsersInfo);
+    rpc deleteUsers(IDPathReq) returns (BaseDataInfo);
+    rpc queryUsers(UsersReq) returns (UsersListInfo);
+    rpc getUsers(IDPathReq) returns (UsersInfo);
+}
+
+service Station {
+    rpc addStation(StationInfo) returns (StationInfo);
+    rpc updateStation(StationInfo) returns (StationInfo);
+    rpc deleteStation(IDPathReq) returns (BaseDataInfo);
+    rpc queryStation(StationReq) returns (StationListInfo);
+    rpc getStationAll(IDPathReq) returns (StationListInfo);
+    rpc getStation(IDPathReq) returns (StationInfo);
+    rpc queryPosts(IDPathReq) returns (StationPostsResp);
+    
+}
+
+service Posts {
+    rpc addPosts(PostsInfo) returns (PostsInfo);
+    rpc updatePosts(PostsInfo) returns (PostsInfo);
+    rpc deletePosts(IDPathReq) returns (BaseDataInfo);
+    rpc queryPosts(PostsReq) returns (PostsListInfo);
+    rpc getPosts(IDPathReq) returns (PostsInfo);
+    rpc queryStation(IDPathReq) returns (PostsStationResp);
+}
+
+service DeliveryLog {
+    rpc addDelivery(DeliveryLogListInfo) returns (BaseDataInfo);
+    rpc getDeliveryList(DeliveryInfo) returns (DeliveryLogListInfo);
+    rpc addDeliveryLog(DeliveryLogInfo) returns (DeliveryLogInfo);
+    rpc updateDeliveryLog(DeliveryLogInfo) returns (DeliveryLogInfo);
+    rpc updateStatus(IDStatusReq) returns (BaseDataInfo);
+    rpc deleteDeliveryLog(IDPathReq) returns (BaseDataInfo);
+    rpc queryDeliveryLog(DeliveryLogReq) returns (DeliveryLogListInfo);
+}
+
+service StationPostsRelation {
+	rpc addStationPostsRelation(StationPostsRelationInfo) returns (StationPostsRelationInfo);
+	rpc updateStationPostsRelation(StationPostsRelationInfo) returns (StationPostsRelationInfo);
+	rpc deleteStationPostsRelation(IDPathReq) returns (BaseDataInfo);
 }
