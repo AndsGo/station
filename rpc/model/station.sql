@@ -9,13 +9,16 @@ CREATE TABLE `station` (
   `articles_num` int(11) DEFAULT NULL COMMENT '文章数量',
   `user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '账号名',
   `pass_word` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
+  `status` tinyint(2) DEFAULT NULL COMMENT '状态 0 正常 1 失效 2 删除',
+  `creater` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '创建人',
   `create_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `modifier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '修改人',
   `update_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='站点信息';
 
 CREATE TABLE `posts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '标题',
   `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '来源',
   `author` int(11) DEFAULT NULL COMMENT '作者',
@@ -48,11 +51,11 @@ CREATE TABLE `delivery_log` (
   `deliverer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投放人',
   `status` tinyint(2) DEFAULT NULL COMMENT '投放状态 0待投放 1已投放 2 投放失败',
   `result` text COLLATE utf8mb4_unicode_ci COMMENT '投放执行结果',
-  `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   `posts_id` int(11) DEFAULT NULL COMMENT '文章id',
   `station_id` int(11) DEFAULT NULL COMMENT '站点id',
   `wp_cate_ids` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'wp分类',
+  `create_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `update_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_posts_station` (`posts_id`,`station_id`),
   KEY `idx_status` (`status`) USING BTREE COMMENT '用来获取为0的数据初始化'
@@ -62,8 +65,8 @@ CREATE TABLE `station_posts_text` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `posts_id` int(11) DEFAULT NULL COMMENT ' posts 主键',
   `content` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'html内容',
-  `create_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-  `update_time` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+  `create_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  `update_at` datetime(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `idx_posts_id` (`posts_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='站点博客内容大字段';
