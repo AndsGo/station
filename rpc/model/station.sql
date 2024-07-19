@@ -18,7 +18,7 @@ CREATE TABLE `station` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='站点信息';
 
 CREATE TABLE `posts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '标题',
   `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '来源',
   `author` int(11) DEFAULT NULL COMMENT '作者',
