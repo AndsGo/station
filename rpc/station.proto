@@ -50,6 +50,7 @@ message StationInfo {
     string pass_word = 8;
     int64 articles_num = 9;
     string ip = 10;
+    int64 status = 11;
 }
 
 // Station page query
@@ -61,6 +62,7 @@ message StationReq {
     string type = 5;
     string industry = 6;
     string ip = 7;
+    int64 status = 8;
 }
 
 // The response data of Station list
@@ -88,7 +90,7 @@ message PostsInfo {
     string source = 3;
     int64 author = 4;
     int64 thrown_num = 5;
-    string create_time = 6;
+    int64 create_time = 6;
     string content = 7;
     string media = 8;
     string categories = 9;
@@ -116,7 +118,7 @@ message DeliveryLogInfo {
     string title = 2;
     string source = 3;
     string domain_name = 4;
-    string delivery_date = 5;
+    int64 delivery_date = 5;
     string deliverer = 6;
     int64 status = 7;
     uint64 author = 8;

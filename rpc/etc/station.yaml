@@ -5,4 +5,4 @@ ListenOn: 0.0.0.0:8080
 #   - 127.0.0.1:2379
 #   Key: station.rpc
 DB:
- DataSource: root:GHZJsi7tzS@tcp(10.0.0.238:3306)/staion1?charset=utf8mb4&parseTime=True&loc=Local
+ DataSource: root:GHZJsi7tzS@tcp(10.0.0.238:3306)/station1?charset=utf8mb4&parseTime=True&loc=Local

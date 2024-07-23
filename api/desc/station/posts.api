@@ -8,7 +8,7 @@ type (
 		Author     int64 `json:"author"` // 作者
 		ThrownNum  int64  `json:"thrownNum"` // 投放数量
 		Categories  string  `json:"categories"` // 分类
-		CreateTime string `json:"createTime,optional"` //时间
+		CreateTime int64 `json:"createTime,optional"` //时间
 		Content    string `json:"content"` //详情
 	}
 	// Posts 页面查询

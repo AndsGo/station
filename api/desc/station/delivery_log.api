@@ -5,7 +5,7 @@ type (
 		Title        string `json:"title"` // 标题
 		Source       string `json:"source,optional"` // 来源
 		DomainName   string `json:"domainName"` // 域名
-		DeliveryDate string `json:"deliveryDate,optional"` // 投放日期
+		DeliveryDate int64 `json:"deliveryDate,optional"` // 投放日期
 		Deliverer    string `json:"deliverer,optional"` // 投放人
 		Status       int64  `json:"status,optional"` // 投放状态
 		Author       uint64 `json:"author,optional"` // 作者
@@ -71,7 +71,7 @@ service Station {
 	@handler queryDeliveryLog
 	get /api/deliverylog (DeliveryLogReq) returns (DeliveryLogListResp)
 
-	@doc "获取投放列表"
+	@doc "生成投放预览列表"
 	@handler generateDeliveryList
 	post /api/deliverylog/list (DeliveryInfo) returns (DeliveryLogListResp)
 }
