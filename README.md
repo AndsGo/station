@@ -10,6 +10,8 @@
 
 [4.rpc代码初始化和数据库代码生成](doc/4rpc代码初始化和数据库代码生成.md)
 
+[5.api和rpc业务代码编写.md](doc/5api和rpc业务代码编写.md)
+
 [视频地址](https://www.bilibili.com/video/BV1mS411K7w6/)
 
 # 需求分析阶段
