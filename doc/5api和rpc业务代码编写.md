@@ -279,3 +279,4 @@ func (m *defaultPostsModel) AddPosts(ctx context.Context, data *Posts, text *Pos
 }
 ```
 
+完整代码查看[5api和rpc业务代码编写](https://github.com/AndsGo/station/tree/5api%E5%92%8Crpc%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99) 分支
