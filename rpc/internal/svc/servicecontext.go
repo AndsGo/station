@@ -13,7 +13,7 @@ type ServiceContext struct {
 	DeliveryLogModel          model.DeliveryLogModel
 	StationModel              model.StationModel
 	PostsModel                model.PostsModel
-	StationPostsTextModel     model.StationPostsTextModel
+	PostsTextModel            model.PostsTextModel
 	StationPostsRelationModel model.StationPostsRelationModel
 }
 
@@ -24,7 +24,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		DeliveryLogModel:          model.NewDeliveryLogModel(cnn),
 		StationModel:              model.NewStationModel(cnn),
 		PostsModel:                model.NewPostsModel(cnn),
-		StationPostsTextModel:     model.NewStationPostsTextModel(cnn),
+		PostsTextModel:            model.NewPostsTextModel(cnn),
 		StationPostsRelationModel: model.NewStationPostsRelationModel(cnn),
 	}
 }

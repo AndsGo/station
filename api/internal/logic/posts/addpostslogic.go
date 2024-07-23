@@ -26,10 +26,7 @@ func NewAddPostsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddPosts
 }
 
 func (l *AddPostsLogic) AddPosts(req *types.PostsInfo) (resp *types.PostsInfoResp, err error) {
-	// todo: add your logic here and delete this line
-
 	info, err := l.svcCtx.PostsRpc.AddPosts(l.ctx, &station.PostsInfo{
-		Id:         req.Id,
 		Content:    req.Content,
 		Title:      req.Title,
 		Source:     req.Source,
@@ -43,8 +40,7 @@ func (l *AddPostsLogic) AddPosts(req *types.PostsInfo) (resp *types.PostsInfoRes
 	}
 	return &types.PostsInfoResp{
 		BaseDataInfo: types.BaseDataInfo{
-			Code:    200,
-			Message: "success",
+			Message: types.Success,
 		},
 		Data: types.PostsInfo{
 			Id:         info.Id,

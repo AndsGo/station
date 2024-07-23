@@ -23,8 +23,11 @@ func NewUpdateStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upda
 	}
 }
 
+// 更新日志状态
 func (l *UpdateStatusLogic) UpdateStatus(in *station.IDStatusReq) (*station.BaseDataInfo, error) {
-	// todo: add your logic here and delete this line
-
-	return &station.BaseDataInfo{}, nil
+	err := l.svcCtx.DeliveryLogModel.UpdateStatus(l.ctx, in.Id, int(in.Status), in.Result)
+	if err != nil {
+		return nil, err
+	}
+	return &station.BaseDataInfo{}, err
 }

@@ -31,7 +31,7 @@ type DeliveryLogInfo struct {
 	Title        string `json:"title"`                 // 标题
 	Source       string `json:"source,optional"`       // 来源
 	DomainName   string `json:"domainName"`            // 域名
-	DeliveryDate string `json:"deliveryDate,optional"` // 投放日期
+	DeliveryDate int64  `json:"deliveryDate,optional"` // 投放日期
 	Deliverer    string `json:"deliverer,optional"`    // 投放人
 	Status       int64  `json:"status,optional"`       // 投放状态
 	Author       uint64 `json:"author,optional"`       // 作者
@@ -90,7 +90,7 @@ type PostsInfo struct {
 	Author     int64  `json:"author"`              // 作者
 	ThrownNum  int64  `json:"thrownNum"`           // 投放数量
 	Categories string `json:"categories"`          // 分类
-	CreateTime string `json:"createTime,optional"` //时间
+	CreateTime int64  `json:"createTime,optional"` //时间
 	Content    string `json:"content"`             //详情
 }
 
@@ -129,6 +129,7 @@ type StationInfo struct {
 	ArticlesNum  int64   `json:"articlesNum"`       // 文章数量
 	UserName     string  `json:"userName,optional"` // 账号名
 	PassWord     string  `json:"passWord,optional"` // 密码
+	Status       int64   `json:"status,optional"`   // 状态
 }
 
 type StationInfoResp struct {
@@ -164,4 +165,5 @@ type StationReq struct {
 	GoogleWeight string `form:"googleWeight,optional"` // 谷歌权重
 	Type         string `form:"type,optional"`         // 网站类型
 	Industry     string `form:"industry,optional"`     // 网站行业
+	Status       int64  `form:"status,optional"`       // 状态
 }

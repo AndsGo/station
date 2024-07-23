@@ -2,6 +2,7 @@ package posts
 
 import (
 	"context"
+	"rpc/station"
 
 	"api/internal/svc"
 	"api/internal/types"
@@ -25,7 +26,13 @@ func NewDeletePostsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 }
 
 func (l *DeletePostsLogic) DeletePosts(req *types.IDPathReq) (resp *types.BaseDataInfo, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	info, err := l.svcCtx.PostsRpc.DeletePosts(l.ctx, &station.IDPathReq{
+		Id: req.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &types.BaseDataInfo{
+		Message: info.Message,
+	}, nil
 }

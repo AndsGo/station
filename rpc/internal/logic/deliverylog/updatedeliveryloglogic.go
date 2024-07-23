@@ -24,7 +24,6 @@ func NewUpdateDeliveryLogLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *UpdateDeliveryLogLogic) UpdateDeliveryLog(in *station.DeliveryLogInfo) (*station.DeliveryLogInfo, error) {
-	// todo: add your logic here and delete this line
 
 	return &station.DeliveryLogInfo{}, nil
 }

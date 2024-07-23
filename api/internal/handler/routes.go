@@ -41,7 +41,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: deliveryLog.DeleteDeliveryLogHandler(serverCtx),
 			},
 			{
-				// 获取投放列表
+				// 生成投放预览列表
 				Method:  http.MethodPost,
 				Path:    "/api/deliverylog/list",
 				Handler: deliveryLog.GenerateDeliveryListHandler(serverCtx),

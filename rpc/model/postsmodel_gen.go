@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"rpc/client/station"
 	"strings"
 	"time"
 
@@ -24,8 +25,11 @@ var (
 type (
 	postsModel interface {
 		Insert(ctx context.Context, data *Posts) (sql.Result, error)
+		AddPosts(ctx context.Context, data *Posts, text *PostsText) (int64, error)
 		FindOne(ctx context.Context, id uint64) (*Posts, error)
+		QueryPosts(ctx context.Context,in *station.PostsReq )([]*Posts,uint64,error)
 		Update(ctx context.Context, data *Posts) error
+		UpdatePosts(ctx context.Context, data *Posts, text *PostsText) error
 		Delete(ctx context.Context, id uint64) error
 	}
 
@@ -75,10 +79,104 @@ func (m *defaultPostsModel) FindOne(ctx context.Context, id uint64) (*Posts, err
 	}
 }
 
+func (m *defaultPostsModel) QueryPosts(ctx context.Context,data *station.PostsReq )([]*Posts,uint64,error){
+	//构建查询条件
+	query := "where 1=1"
+	params :=make([]interface{},0,0)
+	if data.Title!=""{ 
+		query += " and title like ?"
+		params = append(params,  "%"+data.Title+"%")
+	}
+	if data.Source!=""{ 
+		query += " and source = ?"
+		params = append(params,  data.Source)
+	}
+	if data.Author!=0{ 
+		query += " and author = ?"
+		params = append(params,  data.Author)
+	}
+	if data.Categories!=""{ 
+		query += " and categories = ?"
+		params = append(params,  data.Categories)
+	}
+	if data.CreateTime!=""{ 
+		query += " and create_at >= ? and create_at < ?"
+		params = append(params,  fmt.Sprintf("%v 00:00:00",data.CreateTime))
+		params = append(params,  fmt.Sprintf("%v 23:59:59:999",data.CreateTime))
+	}
+	//查数量
+	total := 0
+	items := make([]*Posts, 0)
+	err := m.conn.QueryRow(&total,fmt.Sprintf("select count(1) from %s ", m.table) + query, params...)
+	if err!=nil {
+		return nil,0, err
+	}
+	// 没有记录
+	if total == 0 {
+		return items, uint64(total), nil
+	}
+	//分页
+	query += "  order by id desc LIMIT ? OFFSET ?"
+	params = append(params, data.PageInfo.PageSize)
+	params = append(params, data.PageInfo.PageSize*(data.PageInfo.Page-1))
+	err = m.conn.QueryRows(&items, fmt.Sprintf("select %s from %s", postsRows, m.table) + query, params...)
+	if err!=nil {
+		return nil,0, err
+	}
+	return items,uint64(total),nil
+}
+
 func (m *defaultPostsModel) Insert(ctx context.Context, data *Posts) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, postsRowsExpectAutoSet)
 	ret, err := m.conn.ExecCtx(ctx, query, data.Title, data.Source, data.Author, data.ThrownNum, data.Categories, data.Creater, data.Modifier)
 	return ret, err
+}
+
+// 新增Posts 和PostsText
+func (m *defaultPostsModel) AddPosts(ctx context.Context, data *Posts, text *PostsText) (int64,error){
+	var id int64
+	err := m.conn.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+        query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, postsRowsExpectAutoSet)
+		r, err := session.ExecCtx(ctx, query, data.Title, data.Source, data.Author, data.ThrownNum, data.Categories,data.Creater,data.Modifier)
+        if err != nil {
+            return err
+        }
+		id ,err = r.LastInsertId()
+		if err != nil {
+            return err
+        }
+		query = fmt.Sprintf("insert into %s (%s) values (?, ?)", "posts_text", postsTextRowsExpectAutoSet)
+        _ ,err =session.ExecCtx(ctx, query, id , text.Content)
+        if err != nil {
+            return err
+        }
+		return nil
+    })
+	if err!=nil {
+		return id,err
+	}
+	return id,nil
+}
+
+// 事务更新
+func (m *defaultPostsModel) UpdatePosts(ctx context.Context, data *Posts, text *PostsText) error {
+	err := m.conn.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+        query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, postsRowsWithPlaceHolder)
+		_, err := session.ExecCtx(ctx, query, data.Title, data.Source, data.Author, data.ThrownNum, data.Categories, data.Creater, data.Modifier, data.Id)
+        if err != nil {
+            return err
+        }
+		query = fmt.Sprintf("update %s set %s where `posts_id` = ?","posts_text", postsTextRowsWithPlaceHolder)
+        _ ,err =session.ExecCtx(ctx, query, text.PostsId, text.Content, text.PostsId)
+        if err != nil {
+            return err
+        }
+		return nil
+    }) 
+	if err!=nil {
+		return err
+	}
+	return nil
 }
 
 func (m *defaultPostsModel) Update(ctx context.Context, data *Posts) error {

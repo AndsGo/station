@@ -23,8 +23,22 @@ func NewGetStationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetSta
 	}
 }
 
+// GetStation 获取站点信息
 func (l *GetStationLogic) GetStation(in *station.IDPathReq) (*station.StationInfo, error) {
-	// todo: add your logic here and delete this line
-
-	return &station.StationInfo{}, nil
+	data, err := l.svcCtx.StationModel.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &station.StationInfo{
+		Id:           data.Id,
+		DomainName:   data.DomainName.String,
+		DomainYear:   data.DomainYear.Int64,
+		GoogleWeight: data.GoogleWeight.Float64,
+		Type:         data.Type.String,
+		Industry:     data.Industry.String,
+		UserName:     data.UserName.String,
+		PassWord:     data.PassWord.String,
+		ArticlesNum:  data.ArticlesNum.Int64,
+		Ip:           data.Ip.String,
+	}, nil
 }

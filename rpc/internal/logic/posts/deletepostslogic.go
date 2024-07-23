@@ -24,7 +24,9 @@ func NewDeletePostsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 }
 
 func (l *DeletePostsLogic) DeletePosts(in *station.IDPathReq) (*station.BaseDataInfo, error) {
-	// todo: add your logic here and delete this line
-
+	err := l.svcCtx.PostsModel.Delete(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &station.BaseDataInfo{}, nil
 }

@@ -34,11 +34,10 @@ func (l *AddPostsLogic) AddPosts(in *station.PostsInfo) (*station.PostsInfo, err
 		ThrownNum:  sql.NullInt64{Int64: in.ThrownNum, Valid: true},
 		Categories: sql.NullString{String: in.Categories, Valid: true},
 	}
-	r, err := l.svcCtx.PostsModel.Insert(l.ctx, info)
-	if err != nil {
-		return nil, err
+	text := &model.PostsText{
+		Content: sql.NullString{String: in.Content, Valid: true},
 	}
-	id, err := r.LastInsertId()
+	id, err := l.svcCtx.PostsModel.AddPosts(l.ctx, info, text)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +48,7 @@ func (l *AddPostsLogic) AddPosts(in *station.PostsInfo) (*station.PostsInfo, err
 		Author:     info.Author.Int64,
 		ThrownNum:  info.ThrownNum.Int64,
 		Categories: info.Categories.String,
+		Content:    text.Content.String,
 	}
 	return result, nil
 }

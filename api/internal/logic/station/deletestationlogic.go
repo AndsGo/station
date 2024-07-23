@@ -2,6 +2,7 @@ package station
 
 import (
 	"context"
+	"rpc/station"
 
 	"api/internal/svc"
 	"api/internal/types"
@@ -25,7 +26,11 @@ func NewDeleteStationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 }
 
 func (l *DeleteStationLogic) DeleteStation(req *types.IDPathReq) (resp *types.BaseDataInfo, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	info, err := l.svcCtx.StationRpc.DeleteStation(l.ctx, &station.IDPathReq{Id: req.Id})
+	if err != nil {
+		return nil, err
+	}
+	return &types.BaseDataInfo{
+		Message: info.Message,
+	}, nil
 }

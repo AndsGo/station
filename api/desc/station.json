@@ -160,7 +160,7 @@
     },
     "/station/api/deliverylog/list": {
       "post": {
-        "summary": "获取投放列表",
+        "summary": "生成投放预览列表",
         "operationId": "generateDeliveryList",
         "responses": {
           "200": {
@@ -475,6 +475,14 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "status",
+            "description": " 状态",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -718,7 +726,8 @@
           "description": " 域名"
         },
         "deliveryDate": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": " 投放日期"
         },
         "deliverer": {
@@ -965,7 +974,8 @@
           "description": " 分类"
         },
         "createTime": {
-          "type": "string",
+          "type": "integer",
+          "format": "int64",
           "description": "时间"
         },
         "content": {
@@ -1144,6 +1154,11 @@
         "passWord": {
           "type": "string",
           "description": " 密码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态"
         }
       },
       "title": "StationInfo",
@@ -1317,6 +1332,11 @@
         "industry": {
           "type": "string",
           "description": " 网站行业"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态"
         }
       },
       "title": "StationReq"

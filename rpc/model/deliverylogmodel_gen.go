@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"rpc/client/station"
 	"strings"
 	"time"
 
@@ -24,9 +25,12 @@ var (
 type (
 	deliveryLogModel interface {
 		Insert(ctx context.Context, data *DeliveryLog) (sql.Result, error)
+		InsertBulk(ctx context.Context, data []*DeliveryLog,op sqlx.ResultHandler)  error
 		FindOne(ctx context.Context, id uint64) (*DeliveryLog, error)
 		FindOneByPostsIdStationId(ctx context.Context, postsId sql.NullInt64, stationId sql.NullInt64) (*DeliveryLog, error)
+		QueryDeliveryLog(ctx context.Context,data *station.DeliveryLogReq) ([]*DeliveryLog, uint64, error)
 		Update(ctx context.Context, data *DeliveryLog) error
+		UpdateStatus(ctx context.Context,id uint64,status int,result string) error
 		Delete(ctx context.Context, id uint64) error
 	}
 
@@ -45,8 +49,8 @@ type (
 		Deliverer    sql.NullString `db:"deliverer"`     // 投放人
 		Status       sql.NullInt64  `db:"status"`        // 投放状态 0待投放 1已投放 2 投放失败
 		Result       sql.NullString `db:"result"`        // 投放执行结果
-		CreateTime   time.Time      `db:"create_time"`   // 创建时间
-		UpdateTime   time.Time      `db:"update_time"`   // 修改时间
+		CreateAt   time.Time      `db:"create_at"`   // 创建时间
+		UpdateAt   time.Time      `db:"update_at"`   // 修改时间
 		PostsId      sql.NullInt64  `db:"posts_id"`      // 文章id
 		StationId    sql.NullInt64  `db:"station_id"`    // 站点id
 		WpCateIds    sql.NullString `db:"wp_cate_ids"`   // wp分类
@@ -94,15 +98,89 @@ func (m *defaultDeliveryLogModel) FindOneByPostsIdStationId(ctx context.Context,
 	}
 }
 
+func (m *defaultDeliveryLogModel) QueryDeliveryLog(ctx context.Context,data *station.DeliveryLogReq) ([]*DeliveryLog, uint64, error){
+	query := "where 1=1"
+	//构建查询条件
+	params :=make([]interface{},0,0)
+	if data.Deliverer!=""{ 
+		query += " and deliverer = ?"
+		params = append(params,  data.Deliverer)
+	}
+	if data.DeliveryDate!=""{ 
+		query += " and delivery_date = ?"
+		params = append(params,  data.DeliveryDate)
+	}
+	if data.DomainName!=""{ 
+		query += " and domain_name like ?"
+		params = append(params,  "%"+data.DomainName+"%")
+	}
+	if data.Source!=""{ 
+		query += " and source = ?"
+		params = append(params,  data.Source)
+	}
+	if data.Title!=""{ 
+		query += " and title like ?"
+		params = append(params,  "%"+data.Title+"%")
+	}
+	if data.Author!=0{ 
+		query += " and author = ?"
+		params = append(params,  data.Author)
+	}
+	if data.Status!=-1 {
+		query += " and status = ?"
+		params = append(params,  data.Status)
+	}
+	//查数量
+	total := 0
+	items := make([]*DeliveryLog, 0)
+	err := m.conn.QueryRow(&total,fmt.Sprintf("select count(1) from %s ", m.table) + query, params...)
+	if err!=nil {
+		return nil,0, err
+	}
+	// 没有记录
+	if total == 0 {
+		return items, uint64(total), nil
+	}
+	//分页
+	query += " order by id desc  LIMIT ? OFFSET ?"
+	params = append(params, data.PageInfo.PageSize)
+	params = append(params, data.PageInfo.PageSize*(data.PageInfo.Page-1))
+	err = m.conn.QueryRows(&items, fmt.Sprintf("select %s from %s", deliveryLogRows, m.table) + query, params...)
+	if err!=nil {
+		return nil,0, err
+	}
+	return items,uint64(total),nil
+}
+
 func (m *defaultDeliveryLogModel) Insert(ctx context.Context, data *DeliveryLog) (sql.Result, error) {
 	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, deliveryLogRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Title, data.Source, data.DomainName, data.DeliveryDate, data.Author, data.Deliverer, data.Status, data.Result, data.PostsId, data.StationId, data.WpCateIds)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Title, data.Source, data.DomainName, data.DeliveryDate.Time.Format("2006-01-02"), data.Author, data.Deliverer, data.Status, data.Result, data.PostsId, data.StationId, data.WpCateIds)
 	return ret, err
+}
+
+func (m *defaultDeliveryLogModel) InsertBulk(ctx context.Context, datas []*DeliveryLog,op sqlx.ResultHandler)  error{
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, deliveryLogRowsExpectAutoSet)
+	blk, err := sqlx.NewBulkInserter(m.conn,query)
+	if err != nil {
+        return err
+    }
+    defer blk.Flush()
+	for _,data :=range datas{
+		blk.Insert(data.Title.String, data.Source.String, data.DomainName.String, data.DeliveryDate.Time.Format("2006-01-02"), data.Author.Int64, data.Deliverer.String, data.Status.Int64, data.Result.String, data.PostsId.Int64, data.StationId.Int64, data.WpCateIds.String)
+	}
+	blk.SetResultHandler(op)
+	return nil
 }
 
 func (m *defaultDeliveryLogModel) Update(ctx context.Context, newData *DeliveryLog) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, deliveryLogRowsWithPlaceHolder)
 	_, err := m.conn.ExecCtx(ctx, query, newData.Title, newData.Source, newData.DomainName, newData.DeliveryDate, newData.Author, newData.Deliverer, newData.Status, newData.Result, newData.PostsId, newData.StationId, newData.WpCateIds, newData.Id)
+	return err
+}
+
+func (m *defaultDeliveryLogModel) UpdateStatus(ctx context.Context,id uint64,status int,result string) error {
+	query := fmt.Sprintf("update %s set status = ?,result = ? where `id` = ?", m.table)
+	_,err := m.conn.ExecCtx(ctx,query,status,result,id)
 	return err
 }
 
