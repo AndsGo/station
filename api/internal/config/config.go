@@ -8,4 +8,7 @@ import (
 type Config struct {
 	rest.RestConf
 	RpcConf zrpc.RpcClientConf
+	Secret  struct {
+		AESSecret string
+	}
 }

@@ -49,7 +49,6 @@ func (l *QueryPostsLogic) QueryPosts(req *types.PostsReq) (resp *types.PostsList
 	// 3.转换结果
 	resp = &types.PostsListResp{
 		BaseDataInfo: types.BaseDataInfo{
-			Code:    0,
 			Message: types.Success,
 		},
 		Data: types.PostsListInfo{

@@ -15,6 +15,9 @@ type ServiceContext struct {
 	StationRpc    station.Station
 	PostsRpc      posts.Posts
 	DeliverLogRpc deliverylog.DeliveryLog
+	Secret        struct {
+		AESSecret string
+	}
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

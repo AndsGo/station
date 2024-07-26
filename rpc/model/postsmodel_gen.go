@@ -59,10 +59,24 @@ func newPostsModel(conn sqlx.SqlConn) *defaultPostsModel {
 	}
 }
 
-func (m *defaultPostsModel) Delete(ctx context.Context, id uint64) error {
-	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-	_, err := m.conn.ExecCtx(ctx, query, id)
-	return err
+func (m *defaultPostsModel) Delete(ctx context.Context, id uint64) error {	
+	err := m.conn.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+        query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+		_, err := session.ExecCtx(ctx, query, id)
+        if err != nil {
+            return err
+        }
+		query = fmt.Sprintf("delete from %s where `posts_id` = ?", "posts_text")
+        _ ,err =session.ExecCtx(ctx, query, id )
+        if err != nil {
+            return err
+        }
+		return nil
+    })
+	if err!=nil {
+		return err
+	}
+	return nil
 }
 
 func (m *defaultPostsModel) FindOne(ctx context.Context, id uint64) (*Posts, error) {

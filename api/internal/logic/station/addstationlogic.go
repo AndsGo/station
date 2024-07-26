@@ -2,6 +2,9 @@ package station
 
 import (
 	"context"
+	"pkg/encryption"
+	"pkg/iputil"
+	"pkg/wordpressutil"
 	"rpc/station"
 
 	"api/internal/svc"
@@ -26,21 +29,34 @@ func NewAddStationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddSta
 }
 
 func (l *AddStationLogic) AddStation(in *types.StationInfo) (resp *types.StationInfoResp, err error) {
-	// todo 校验账号密码
-	// todo 加密密码
+	//校验wordpress 账号密码
+	err = wordpressutil.Test(in.DomainName, in.UserName, in.PassWord)
+	if err != nil {
+		return nil, err
+	}
+	// 加密密码
+	pw, err := encryption.AESEncrypt(in.PassWord, l.svcCtx.Config.Secret.AESSecret)
+	if err != nil {
+		return nil, err
+	}
+
 	info := &station.StationInfo{
+		Id:           in.Id,
 		DomainName:   in.DomainName,
 		DomainYear:   in.DomainYear,
 		GoogleWeight: in.GoogleWeight,
 		Type:         in.Type,
 		Industry:     in.Industry,
 		UserName:     in.UserName,
-		PassWord:     in.PassWord,
+		PassWord:     pw,
 		ArticlesNum:  in.ArticlesNum,
 		Ip:           in.Ip,
 	}
-	// todo 自动获取服务器ip
-
+	// 自动获取服务器ip
+	if info.Ip == "" {
+		ip, _ := iputil.GetDomainIP(info.DomainName)
+		info.Ip = ip
+	}
 	// 1. 新增站点
 	data, err := l.svcCtx.StationRpc.AddStation(l.ctx, info)
 	if err != nil {
