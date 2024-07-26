@@ -12,6 +12,8 @@
 
 [5.api和rpc业务代码编写.md](doc/5api和rpc业务代码编写.md)
 
+[6.wordpress外部库的引入和测试](doc/6wordpress外部库的引入和测试.md)
+
 [视频地址](https://www.bilibili.com/video/BV1mS411K7w6/)
 
 # 需求分析阶段
