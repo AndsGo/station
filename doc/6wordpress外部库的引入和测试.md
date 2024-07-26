@@ -384,7 +384,7 @@ func (l *AddStationLogic) AddStation(in *types.StationInfo) (resp *types.Station
 
 这样我们完成了外部公共库的引入和使用。
 
-完整代码查询 代码分支  。
+完整代码查询 [6wordpress外部库的引入和测试](https://github.com/AndsGo/station/tree/6wordpress%E5%A4%96%E9%83%A8%E5%BA%93%E7%9A%84%E5%BC%95%E5%85%A5%E5%92%8C%E6%B5%8B%E8%AF%95) 代码分支  。
 
 ## 5.总结
 
