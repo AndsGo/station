@@ -1,0 +1,12 @@
+Mode: console
+ServiceName: station-job
+Path: ../logs
+XxlJob:
+  Addresses: http://127.0.0.1:8080/xxl-job-admin
+  AccessToken: 
+  Appname: station-job
+  Port: 9989
+  Ip: 127.0.0.1
+StationRpcConf:
+  Target: dns:///127.0.0.1:8080
+  Timeout: 10000 #rpc 超时时间
