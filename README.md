@@ -14,6 +14,8 @@
 
 [6.wordpress外部库的引入和测试](doc/6wordpress外部库的引入和测试.md)
 
+[7.job项目构建和分发任务编写](doc/7job项目构建和分发任务编写)
+
 [视频地址](https://www.bilibili.com/video/BV1mS411K7w6/)
 
 # 需求分析阶段
